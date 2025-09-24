@@ -14,7 +14,13 @@ col1, col2 = st.columns([2, 1])
 with col1:
     name = st.text_input("Name", placeholder="Enter your name")
     weight_str = st.text_input("Weight (kg)", placeholder="Enter your weight")
-    height_ft = st.text_input("Height (ft)", placeholder="e.g., 5'4")
+
+    # Side-by-side inputs for feet and inches
+    col_ft, col_in = st.columns(2)
+    with col_ft:
+        feet_str = st.text_input("Height (ft)", placeholder="e.g., 5")
+    with col_in:
+        inches_str = st.text_input("Height (in)", placeholder="e.g., 4")
 
     if st.button("Calculate BMI"):
         try:
@@ -23,13 +29,13 @@ with col1:
                 st.stop()
             weight = float(weight_str)
 
-            if "'" in height_ft:
-                feet, inches = height_ft.split("'")
-                feet = float(feet)
-                inches = float(inches)
-            else:
-                st.warning("⚠️ Please enter height in format like 5'4")
+            if not feet_str or not inches_str:
+                st.warning("⚠️ Please enter both feet and inches")
                 st.stop()
+
+            # Convert inputs to integers (whole numbers)
+            feet = int(feet_str)
+            inches = int(inches_str)
 
             # Convert height to meters
             h_m = (feet * 0.3048) + (inches * 0.0254)
@@ -54,9 +60,14 @@ with col1:
                 feedback = "Exercise daily and focus on healthier meals."
                 color = "red"
 
-            st.markdown(f"<p style='color:{color}; font-weight:bold'>{name} has a BMI of {bmi_rounded} ({category})</p>", unsafe_allow_html=True)
+            st.markdown(
+                f"<p style='color:{color}; font-weight:bold'>{name} has a BMI of {bmi_rounded} ({category})</p>", 
+                unsafe_allow_html=True
+            )
             st.info(f"Feedback: {feedback}")
 
+        except ValueError:
+            st.error("⚠️ Feet and inches must be whole numbers")
         except Exception as e:
             st.error(f"⚠️ Error: {e}")
 
