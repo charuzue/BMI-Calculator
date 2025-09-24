@@ -15,12 +15,13 @@ with col1:
     name = st.text_input("Name", placeholder="Enter your name")
     weight_str = st.text_input("Weight (kg)", placeholder="Enter your weight")
 
-    # Side-by-side inputs for feet and inches
+    # Height input: separate fields for feet and inches
+    st.markdown("**Height**")
     col_ft, col_in = st.columns(2)
     with col_ft:
-        feet_str = st.text_input("Height (ft)", placeholder="e.g., 5")
+        feet_str = st.text_input("Feet (ft)", placeholder="e.g., 5")
     with col_in:
-        inches_str = st.text_input("Height (in)", placeholder="e.g., 4")
+        inches_str = st.text_input("Inches (in)", placeholder="e.g., 4")
 
     if st.button("Calculate BMI"):
         try:
@@ -33,7 +34,7 @@ with col1:
                 st.warning("⚠️ Please enter both feet and inches")
                 st.stop()
 
-            # Convert inputs to integers (whole numbers)
+            # Convert inputs to integers (whole numbers only)
             feet = int(feet_str)
             inches = int(inches_str)
 
@@ -47,7 +48,7 @@ with col1:
                 category = "Underweight"
                 feedback = "Eat more nutritious food and protein to gain healthy weight."
                 color = "red"
-            elif 18.5 <= bmi < 25:  # strictly less than 25
+            elif 18.5 <= bmi < 25:
                 category = "Normal Weight"
                 feedback = "Great job! You're maintaining a healthy weight. Keep it up!"
                 color = "green"
